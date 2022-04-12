@@ -1,12 +1,20 @@
 import React from "react";
 
+import "./layout.css";
+
+import Header from "./../header/header";
+import Fliter from "./../filter/filter";
+import Footer from "./../footer/footer";
+
 const Layout = (props) => {
   return (
     <React.Fragment>
-      <header></header>
-      <main>{props.childern}</main>
+      <Header></Header>
+      <Fliter></Fliter>
+      <main>{props.children}</main>
+      <Footer></Footer>
     </React.Fragment>
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

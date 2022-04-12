@@ -1,0 +1,38 @@
+header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 0.1rem solid rgb(212, 212, 212);
+}
+.nav-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 4rem;
+  font-weight: 100;
+}
+.btn-register {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input[type="text"] {
+  width: 25rem;
+  padding: 1rem 1.5rem;
+  background-color: rgb(241, 241, 241);
+  color: rgb(167, 167, 167);
+  border: 0.1rem solid rgb(167, 167, 167);
+  border-radius: 1.8rem;
+}
+.login-container {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: space-between;
+  align-items: center;
+}

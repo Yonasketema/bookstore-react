@@ -1,0 +1,21 @@
+.login_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 1rem;
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid rgb(167, 167, 167);
+  padding: 2rem 3rem;
+}
+.login_label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

@@ -1,0 +1,56 @@
+.filter-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+
+  /* border-bottom: 1px solid rgb(212, 212, 212); */
+}
+.filter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-btn {
+  display: flex;
+  gap: 1.5rem;
+}
+select {
+  min-width: 9rem;
+  padding: 8px 12px;
+
+  background-color: #fff;
+  color: #262626;
+  border: 1px solid rgb(167, 167, 167);
+  border-radius: 1.8rem;
+}
+
+.select {
+  display: flex;
+
+  gap: 1.5rem;
+}
+/* Must change the name to moudle.css  */
+.btn-nav {
+  font-weight: 400;
+  font-size: 2rem;
+  padding: 1rem;
+  background-color: transparent;
+  color: #333;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  display: flex;
+  gap: 0.5rem;
+}
+.btn-nav:hover {
+  color: #000;
+}
+
+.active {
+  color: #fff;
+  border-bottom: 0.2rem solid var(--main-color);
+}

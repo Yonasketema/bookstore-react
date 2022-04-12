@@ -1,0 +1,49 @@
+.modalContent {
+  overflow: auto;
+  height: 40rem;
+}
+.Comment {
+  width: 50%;
+}
+
+.CloseModalButton {
+  margin: 15px;
+  padding: 15px;
+  background-color: rgb(255, 112, 112);
+  position: absolute;
+  top: 13px;
+  right: 13px;
+}
+
+.name {
+  padding: 1rem;
+  color: #292929;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-bottom: 0.1rem solid rgb(235, 235, 235);
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.review {
+  color: rgb(99, 99, 99);
+}
+.submitform {
+  display: flex;
+}
+.submitinput {
+  width: 100%;
+  border: 1px solid #000;
+}
+
+.submitButton {
+  background-color: #000;
+  color: #fff;
+  padding: 1rem 1.5rem;
+}
+@media (min-width: 600px) {
+  .Modal {
+    width: 500px;
+    left: calc(50% - 250px);
+  }
+}
