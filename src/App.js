@@ -1,48 +1,70 @@
+/** @jsxImportSource @emotion/react */
+
+import { Button, FlexBox, Select } from "./components/lib";
+import Book from "./components/Book";
 import React from "react";
-import { Outlet } from "react-router-dom";
-import Layout from "./components/layout/Layout";
-import Display from "./components/display/display";
-import GlobalState from "./global";
-import { User } from "./userState";
 
 import "./App.css";
 
 function App() {
-  const initialState = {
-    selectValue: "",
-    userName: "",
-  };
-
-  const [state, setState] = React.useState(initialState);
-
-  const { isLoading, isError, data, error } = User();
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
-
-  console.log("[App.js]", data);
-
+  const [select, setSelect] = React.useState(" ");
+  console.log(select);
   return (
-    <GlobalState.Provider value={[state, setState]}>
-      <Layout>
-        <h2 style={{ textAlign: "center" }}>
-          {data ? (
-            <Display name={data.data.user.name} />
-          ) : (
-            <Display name="please login." />
-          )}
-        </h2>
-        <div className="main">
-          <Outlet />
-        </div>
-      </Layout>
-    </GlobalState.Provider>
+    <>
+      <div
+        css={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "1rem",
+          borderBottom: "1px solid #999",
+          height: "3rem",
+        }}
+      >
+        <h1>BookStore</h1>
+
+        <FlexBox>
+          <Button>Login</Button>
+          <Button>Logout</Button>
+        </FlexBox>
+      </div>
+
+      <div
+        css={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "1rem",
+        }}
+      >
+        <FlexBox>
+          <Button>Books</Button>
+          <Button>Saved</Button>
+        </FlexBox>
+
+        <FlexBox>
+          <Select onChange={(e) => setSelect(e.target.value)}>
+            <option value=" ">All</option>
+            <option value="fiction">Fiction</option>
+            <option value="historical"> Historical</option>
+            <option value="science"> Science</option>
+          </Select>
+          <Select></Select>
+        </FlexBox>
+      </div>
+
+      <div
+        css={{
+          display: "grid",
+          width: "100%",
+          gridTemplateColumns: "repeat(5,1fr)",
+          gap: "1rem",
+        }}
+      >
+        <Book select={select} />
+      </div>
+    </>
   );
 }
 
-export default React.memo(App);
+export default App;
