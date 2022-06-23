@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
+import { BiCommentDetail } from "react-icons/bi";
 const Button = styled.button({
   fontSize: "1rem",
   fontWeight: "400",
@@ -12,6 +13,9 @@ const Button = styled.button({
 });
 
 const LikeButton = styled(FcLikePlaceholder)({
+  fontSize: "3rem",
+});
+const CommentButton = styled(BiCommentDetail)({
   fontSize: "3rem",
 });
 
@@ -43,4 +47,12 @@ const inputStyles = {
 
 const Input = styled.input({ borderRadius: "3px" }, inputStyles);
 
-export { Button, FlexBox, Select, Input, LikeButton, DisLikeButton };
+export {
+  Button,
+  FlexBox,
+  Select,
+  Input,
+  LikeButton,
+  DisLikeButton,
+  CommentButton,
+};
