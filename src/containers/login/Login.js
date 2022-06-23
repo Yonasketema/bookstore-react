@@ -3,26 +3,9 @@ import React from "react";
 import { useFormik } from "formik";
 import Classes from "./login.module.css";
 import axios from "axios";
+import { login } from "./../../AuthProvider";
 
 const Login = () => {
-  async function makePostRequest(userData) {
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
-        userData
-      );
-
-      if (data.status === "success") {
-        localStorage.setItem("jwt", data.data.token);
-        window.location.replace("/");
-      }
-    } catch (err) {
-      console.log("[Login.js] makePostRequest", err);
-
-      ///some thing set to be true
-    }
-  }
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -30,7 +13,7 @@ const Login = () => {
     },
 
     onSubmit: async (values) => {
-      makePostRequest(values);
+      login(values);
     },
   });
 

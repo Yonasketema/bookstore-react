@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@reach/dialog": "^0.17.0",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -12,6 +13,7 @@
     "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.4.0",
     "react-query": "^3.34.19",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",

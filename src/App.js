@@ -1,68 +1,49 @@
-/** @jsxImportSource @emotion/react */
-
-import { Button, FlexBox, Select } from "./components/lib";
-import Book from "./components/Book";
+import axios from "axios";
 import React from "react";
 
-import "./App.css";
+import AuthenticatedApp from "./authenticated-app";
+import UnauthenticatedApp from "./unauthenticated-app";
+import Login from "./components/login";
+import * as auth from "./AuthProvider";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 
 function App() {
-  const [select, setSelect] = React.useState(" ");
-  console.log(select);
+  const navigate = useNavigate();
+
+  const [user, setUser] = React.useState(null);
+  const [token, setToken] = React.useState(() => auth.getToken());
+
+  const login = (form) =>
+    auth.login(form).then((u) => {
+      setToken(u.token);
+    });
+
+  useQuery(
+    "user",
+    () => {
+      return window
+        .fetch("http://localhost:8000/api/v1/users/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => response.json())
+        .catch((error) => Promise.reject(error));
+    },
+    {
+      onSuccess: (user) => {
+        setUser({ ...user, token: token });
+      },
+    }
+  );
+
+  console.log("......>>.", user);
+
   return (
     <>
-      <div
-        css={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "1rem",
-          borderBottom: "1px solid #999",
-          height: "3rem",
-        }}
-      >
-        <h1>BookStore</h1>
-
-        <FlexBox>
-          <Button>Login</Button>
-          <Button>Logout</Button>
-        </FlexBox>
-      </div>
-
-      <div
-        css={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "1rem",
-        }}
-      >
-        <FlexBox>
-          <Button>Books</Button>
-          <Button>Saved</Button>
-        </FlexBox>
-
-        <FlexBox>
-          <Select onChange={(e) => setSelect(e.target.value)}>
-            <option value=" ">All</option>
-            <option value="fiction">Fiction</option>
-            <option value="historical"> Historical</option>
-            <option value="science"> Science</option>
-          </Select>
-          <Select></Select>
-        </FlexBox>
-      </div>
-
-      <div
-        css={{
-          display: "grid",
-          width: "100%",
-          gridTemplateColumns: "repeat(5,1fr)",
-          gap: "1rem",
-        }}
-      >
-        <Book select={select} />
-      </div>
+      <Routes>
+        <Route path="/" element={<AuthenticatedApp user={user} />} />
+        <Route path="/login" element={<Login onSubmit={login} />} />
+      </Routes>
     </>
   );
 }

@@ -12,8 +12,8 @@ const Login = () => {
         userData
       );
 
-      if (data.status === "success") {
-        localStorage.setItem("jwt", data.data.token);
+      if (data === "success") {
+        localStorage.setItem("jwt", data.dat.token);
         window.location.replace("/");
       }
     } catch (err) {

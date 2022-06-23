@@ -54,8 +54,6 @@ const Books = () => {
       }
     );
 
-    console.log("[Books.js] result", data);
-
     const newData = books.map((book) => {
       if (book._id === data.result._id) {
         return data.result;
