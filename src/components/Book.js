@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { DisLikeButton, LikeButton } from "./lib";
+import { DisLikeButton, LikeButton, Input, Button } from "./lib";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
+import { Dialog, DialogOverlay, DialogContent } from "@reach/dialog";
+import "@reach/dialog/styles.css";
 
 function fetchBook(select) {
   return window
@@ -101,6 +103,11 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
   const { mutate: likeBook } = useLikeBook(select);
   const { mutate: disLikeBook } = useDisLikeBook(select);
 
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const open = () => setOpenModal(true);
+  const close = () => setOpenModal(false);
+
   return (
     <section
       css={{
@@ -147,9 +154,35 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
               />
             )}
             <div>
-              <button>
+              <button onClick={open}>
                 <i className="fa-solid fa-comment fa-2x">c</i>
               </button>
+              <Dialog aria-label="review" isOpen={openModal} onDismiss={close}>
+                <div>
+                  <button
+                    onClick={close}
+                    css={{
+                      position: "relative",
+                      left: "90%",
+                    }}
+                  >
+                    Close
+                    <span aria-hidden>×</span>
+                  </button>
+
+                  <div>
+                    <div>
+                      <p>yonas:💖💖💖💖💖💖💖</p>{" "}
+                    </div>
+                    <div>
+                      <label htmlFor="comment">comment</label>
+                      <Input id="comment" />
+                    </div>
+                    <Button>Post</Button>
+                  </div>
+                </div>
+                <h3>Review</h3>
+              </Dialog>
             </div>
           </div>
 
