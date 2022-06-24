@@ -68,14 +68,7 @@ function AuthenticatedApp({ user }) {
         </FlexBox>
       </div>
 
-      <div
-        css={{
-          display: "grid",
-          width: "100%",
-          gridTemplateColumns: "repeat(5,1fr)",
-          gap: "1rem",
-        }}
-      >
+      <div>
         <Book
           select={select}
           save={user?.user?.savedBooks}

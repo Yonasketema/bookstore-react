@@ -42,7 +42,18 @@ function BookDisplay({ select, save, token, userID, liked }) {
     />
   ));
 
-  return <>{books}</>;
+  return (
+    <div
+      css={{
+        display: "grid",
+        width: "100%",
+        gridTemplateColumns: "repeat(4,1fr)",
+        gap: "1rem",
+      }}
+    >
+      {books}
+    </div>
+  );
 }
 
 const Book = ({ img, title, id, save, token, liked, userID, select }) => {
