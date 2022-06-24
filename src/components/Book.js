@@ -12,6 +12,8 @@ import {
   dislike,
 } from "./../utils/book-api";
 
+import { useNavigate } from "react-router-dom";
+
 import { useMutationHook } from "../utils/hook";
 import "@reach/dialog/styles.css";
 
@@ -60,6 +62,7 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
   const { mutate: likeBook } = useMutationHook(select, like);
   const { mutate: disLikeBook } = useMutationHook(select, dislike);
   const { mutate: postComment } = useMutationHook(id, postCommentfn);
+  const navigate = useNavigate();
 
   const { data } = useQuery(id, () => getComment(id));
 
@@ -75,7 +78,6 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
 
   function handleComment(event, bookid) {
     event.preventDefault();
-    // alert(`comment ${event.target.elements.comment.value}`);
     const review = event.target.elements.comment.value;
     postComment({ review, bookid, token });
   }
@@ -126,7 +128,7 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
             ) : (
               <LikeButton
                 onClick={() => {
-                  likeBook({ id, token });
+                  token ? likeBook({ id, token }) : navigate("/login");
                 }}
               />
             )}

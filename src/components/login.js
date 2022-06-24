@@ -1,5 +1,4 @@
 import React from "react";
-import * as auth from "./../AuthProvider";
 import { Input, FlexBox } from "./lib";
 
 const Login = ({ onSubmit }) => {

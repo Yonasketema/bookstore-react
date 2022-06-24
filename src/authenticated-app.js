@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
-import "./App.css";
 import { Button, FlexBox, Select } from "./components/lib";
 import Book from "./components/book";
 import React from "react";
 import { Link } from "react-router-dom";
 
-function AuthenticatedApp({ user }) {
+function AuthenticatedApp({ user, logout }) {
   const [select, setSelect] = React.useState("All");
   return (
     <>
@@ -25,7 +24,8 @@ function AuthenticatedApp({ user }) {
         <FlexBox>
           {user?.user?.name ? (
             <>
-              <small>{user?.user?.name}</small> <Button>Logout</Button>
+              <small>{user?.user?.name}</small>{" "}
+              <Button onClick={logout}> Logout</Button>
             </>
           ) : (
             <>
