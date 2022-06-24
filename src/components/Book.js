@@ -2,98 +2,19 @@
 
 import React from "react";
 import { DisLikeButton, LikeButton, Input, Button, CommentButton } from "./lib";
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import axios from "axios";
+import { useQuery } from "react-query";
 import { Dialog, DialogOverlay, DialogContent } from "@reach/dialog";
+import {
+  fetchBook,
+  getComment,
+  like,
+  postCommentfn,
+  dislike,
+} from "./../utils/book-api";
+
+import { useMutationHook } from "../utils/hook";
 import "@reach/dialog/styles.css";
 
-function fetchBook(select) {
-  return window
-    .fetch(`http://localhost:8000/api/v1/books?select=${select}`, {})
-    .then((response) => response.json());
-}
-
-const likePost = ({ id, token }) => {
-  return axios.put(
-    "http://localhost:8000/api/v1/books/like",
-    {
-      bookId: id,
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-};
-
-const dislike = ({ id, token }) => {
-  return axios.put(
-    "http://localhost:8000/api/v1/books/unlike",
-    {
-      bookId: id,
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-};
-
-function getComment(id) {
-  return axios.get(`http://localhost:8000/api/v1/books/${id}`);
-}
-
-function postComment({ review, bookid, token }) {
-  return axios.post(
-    "http://localhost:8000/api/v1/reviews",
-    {
-      review,
-      book: bookid,
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-}
-const usePostCommnet = (query) => {
-  const queryClient = useQueryClient();
-  return useMutation(postComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(query);
-    },
-  });
-};
-
-export const useLikeBook = (query) => {
-  const queryClient = useQueryClient();
-  return useMutation(likePost, {
-    onSuccess: (newData) => {
-      // queryClient.setQueriesData(query, (oldData) => {
-      //   // const likebox = oldData.data.books.map((book) => {
-      //   //   if (book._id === newData.data.result._id) {
-      //   //     return newData.data.result;
-      //   //   } else {
-      //   //     return book;
-      //   //   }
-      //   // });
-
-      //   return {
-      //     ...oldData,
-      //     data: [...oldData.data.books, newData],
-      //   };
-      // });
-      queryClient.invalidateQueries(query);
-    },
-  });
-};
-export const useDisLikeBook = (select) => {
-  const queryClient = useQueryClient();
-  return useMutation(dislike, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(select);
-    },
-  });
-};
-
-////////////////////////////////////////////////////////////////////////////////////
 function BookDisplay({ select, save, token, userID, liked }) {
   const { isLoading, isError, data } = useQuery(select, () =>
     fetchBook(select === "All" ? "" : select)
@@ -125,13 +46,11 @@ function BookDisplay({ select, save, token, userID, liked }) {
 }
 
 const Book = ({ img, title, id, save, token, liked, userID, select }) => {
-  const { mutate: likeBook } = useLikeBook(select);
-  const { mutate: disLikeBook } = useDisLikeBook(select);
-  const { mutate: postComment } = usePostCommnet(id);
+  const { mutate: likeBook } = useMutationHook(select, like);
+  const { mutate: disLikeBook } = useMutationHook(select, dislike);
+  const { mutate: postComment } = useMutationHook(id, postCommentfn);
 
-  const { data, fetch: fetchBook } = useQuery(id, () => getComment(id));
-
-  console.log("....", data?.data.data.book?.reviews);
+  const { data } = useQuery(id, () => getComment(id));
 
   const comments = data?.data.data.book?.reviews?.map((bookReview, i) => {
     return (

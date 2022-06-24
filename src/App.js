@@ -1,8 +1,5 @@
-import axios from "axios";
 import React from "react";
-
 import AuthenticatedApp from "./authenticated-app";
-import UnauthenticatedApp from "./unauthenticated-app";
 import Login from "./components/login";
 import * as auth from "./AuthProvider";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -35,8 +32,6 @@ function App() {
       },
     }
   );
-
-  console.log("......>>.", user);
 
   return (
     <>

@@ -2,7 +2,7 @@
 
 import "./App.css";
 import { Button, FlexBox, Select } from "./components/lib";
-import Book from "./components/Book";
+import Book from "./components/book";
 import React from "react";
 import { Link } from "react-router-dom";
 

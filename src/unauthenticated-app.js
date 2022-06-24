@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Button, FlexBox, Select } from "./components/lib";
-import Book from "./components/Book";
+import Book from "./components/book";
 import React from "react";
 
 import "./App.css";
