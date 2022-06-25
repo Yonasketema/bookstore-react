@@ -2,13 +2,13 @@ import axios from "axios";
 
 function fetchBook(select) {
   return window
-    .fetch(`http://localhost:8000/api/v1/books?select=${select}`, {})
+    .fetch(`${process.env.REACT_APP_AUTH_URL}/api/v1/books?select=${select}`, {})
     .then((response) => response.json());
 }
 
 const like = ({ id, token }) => {
   return axios.put(
-    "http://localhost:8000/api/v1/books/like",
+    `${process.env.REACT_APP_AUTH_URL}/api/v1/books/like`,
     {
       bookId: id,
     },
@@ -20,7 +20,7 @@ const like = ({ id, token }) => {
 
 const dislike = ({ id, token }) => {
   return axios.put(
-    "http://localhost:8000/api/v1/books/unlike",
+    `${process.env.REACT_APP_AUTH_URL}/api/v1/books/unlike1`,
     {
       bookId: id,
     },
@@ -31,12 +31,12 @@ const dislike = ({ id, token }) => {
 };
 
 function getComment(id) {
-  return axios.get(`http://localhost:8000/api/v1/books/${id}`);
+  return axios.get(`${process.env.REACT_APP_AUTH_URL}/api/v1/books/${id}`);
 }
 
 const postCommentfn = ({ review, bookid, token }) => {
   return axios.post(
-    "http://localhost:8000/api/v1/reviews",
+    `${process.env.REACT_APP_AUTH_URL}/api/v1/reviews`,
     {
       review,
       book: bookid,
@@ -48,7 +48,7 @@ const postCommentfn = ({ review, bookid, token }) => {
 };
 const saveBook = async ({ id, token }) => {
   return axios.put(
-    "http://localhost:8000/api/v1/books/save",
+    `${process.env.REACT_APP_AUTH_URL}/api/v1/books/save`,
     {
       bookId: id,
     },
@@ -59,7 +59,7 @@ const saveBook = async ({ id, token }) => {
 };
 const unsaveBook = async ({ id, token }) => {
   return await axios.put(
-    "http://localhost:8000/api/v1/books/unsave",
+    `${process.env.REACT_APP_AUTH_URL}/api/v1/books/unsave`,
     {
       bookId: id,
     },

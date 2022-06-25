@@ -39,7 +39,7 @@ function App() {
     "user",
     () => {
       return window
-        .fetch("http://localhost:8000/api/v1/users/profile", {
+        .fetch(`${process.env.REACT_APP_AUTH_URL}/api/v1/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(async (response) => {

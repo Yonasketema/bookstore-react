@@ -29,8 +29,8 @@ function logout() {
   window.location.assign(window.location);
 }
 
-const authURL = "http://localhost:8000/api/v1/users";
-// process.env.REACT_APP_AUTH_URL;
+const authURL = `${process.env.REACT_APP_AUTH_URL}/api/v1/users`;
+ 
 
 async function client(endpoint, data) {
   const config = {
