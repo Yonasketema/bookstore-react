@@ -4,9 +4,14 @@ import { Button, FlexBox, Select } from "./components/lib";
 import Book from "./components/book";
 import React from "react";
 import { Link } from "react-router-dom";
+import * as mq from "./style/media-queries";
 
-function AuthenticatedApp({ user, logout }) {
+import { useUser } from "./context/user-context";
+
+function BookStore({ logout }) {
   const [select, setSelect] = React.useState("All");
+  const [user] = useUser();
+
   return (
     <>
       <div
@@ -17,6 +22,9 @@ function AuthenticatedApp({ user, logout }) {
           marginBottom: "1rem",
           borderBottom: "1px solid #999",
           height: "3rem",
+          [mq.mini]: {
+            flexDirection: "column",
+          },
         }}
       >
         <h1>BookStore</h1>
@@ -32,8 +40,8 @@ function AuthenticatedApp({ user, logout }) {
               <Link to="/login">
                 <Button>Login</Button>
               </Link>
-              <Link to="/login">
-                <Button>Register</Button>
+              <Link to="/signup">
+                <Button>Signup</Button>
               </Link>
             </>
           )}
@@ -46,14 +54,32 @@ function AuthenticatedApp({ user, logout }) {
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: "1rem",
+          [mq.mini]: {
+            flexDirection: "column",
+            margin: "1rem",
+          },
         }}
       >
-        <FlexBox>
+        <FlexBox
+          css={{
+            [mq.mini]: {
+              flexDirection: "column",
+              margin: "1rem",
+            },
+          }}
+        >
           <Button>Books</Button>
           <Button>Saved</Button>
         </FlexBox>
 
-        <FlexBox>
+        <FlexBox
+          css={{
+            [mq.mini]: {
+              flexDirection: "column",
+              margin: "1rem",
+            },
+          }}
+        >
           <Select onChange={(e) => setSelect(e.target.value)}>
             <option value="All">All</option>
             <option value="fiction">Fiction</option>
@@ -69,16 +95,10 @@ function AuthenticatedApp({ user, logout }) {
       </div>
 
       <div>
-        <Book
-          select={select}
-          save={user?.user?.savedBooks}
-          liked={user?.user?.likedBooks}
-          token={user?.token}
-          userID={user?.user?._id}
-        />
+        <Book select={select} />
       </div>
     </>
   );
 }
 
-export default AuthenticatedApp;
+export default BookStore;

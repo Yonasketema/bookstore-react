@@ -6,7 +6,7 @@ function getToken() {
 
 function handleUserResponse(data) {
   window.localStorage.setItem(localStorageKey, data.token);
-  window.location.replace("/");
+  window.location.assign("/");
   return data;
 }
 
@@ -14,9 +14,9 @@ function login({ email, password }) {
   return client("login", { email, password }).then(handleUserResponse);
 }
 
-function register({ username, password, passwordConfirm, email, age }) {
-  return client("login", {
-    username,
+function signup({ name, password, passwordConfirm, email, age }) {
+  return client("signup", {
+    name,
     password,
     passwordConfirm,
     email,
@@ -42,13 +42,13 @@ async function client(endpoint, data) {
   return window
     .fetch(`${authURL}/${endpoint}`, config)
     .then(async (response) => {
-      const { data } = await response.json();
+      const data = await response.json();
       if (response.ok) {
-        return data;
+        return data.data;
       } else {
         return Promise.reject(data);
       }
     });
 }
 
-export { getToken, login, register, logout, localStorageKey };
+export { getToken, login, signup, logout, localStorageKey };

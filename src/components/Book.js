@@ -1,25 +1,22 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { DisLikeButton, LikeButton, Input, Button, CommentButton } from "./lib";
-import { useQuery } from "react-query";
-import { Dialog, DialogOverlay, DialogContent } from "@reach/dialog";
-import {
-  fetchBook,
-  getComment,
-  like,
-  postCommentfn,
-  dislike,
-} from "./../utils/book-api";
-
-import { useNavigate } from "react-router-dom";
-
-import { useMutationHook } from "../utils/hook";
 import "@reach/dialog/styles.css";
+import React from "react";
+import { DisLikeButton, LikeButton, Input, Button } from "./lib";
+import { UnSavedButton } from "./lib";
+import { CommentButton } from "./lib";
+import { SaveButton } from "./lib";
+import { useQuery } from "react-query";
+import { Dialog } from "@reach/dialog";
+import * as fn from "./../utils/book-api";
+import { useNavigate } from "react-router-dom";
+import { useMutationHook } from "../utils/hook";
+import { useUser } from "./../context/user-context";
+import * as mq from "./../style/media-queries";
 
-function BookDisplay({ select, save, token, userID, liked }) {
+function BookDisplay({ select }) {
   const { isLoading, isError, data } = useQuery(select, () =>
-    fetchBook(select === "All" ? "" : select)
+    fn.fetchBook(select === "All" ? "" : select)
   );
 
   if (isLoading) {
@@ -37,10 +34,7 @@ function BookDisplay({ select, save, token, userID, liked }) {
       title={book.title}
       liked={book.likes}
       //
-      select={select}
-      save={save}
-      token={token}
-      userID={userID}
+      query={select}
     />
   ));
 
@@ -49,8 +43,21 @@ function BookDisplay({ select, save, token, userID, liked }) {
       css={{
         display: "grid",
         width: "100%",
-        gridTemplateColumns: "repeat(4,1fr)",
+        gridTemplateColumns: "repeat(4,25%)",
         gap: "1rem",
+        justifyContent: "space-between",
+        [mq.small]: {
+          width: "50%",
+          gridTemplateColumns: "repeat(3,70%)",
+        },
+        [mq.tab]: {
+          width: "50%",
+          gridTemplateColumns: "repeat(2,100%)",
+        },
+        [mq.mini]: {
+          display: "flex",
+          flexDirection: "column",
+        },
       }}
     >
       {books}
@@ -58,13 +65,22 @@ function BookDisplay({ select, save, token, userID, liked }) {
   );
 }
 
-const Book = ({ img, title, id, save, token, liked, userID, select }) => {
-  const { mutate: likeBook } = useMutationHook(select, like);
-  const { mutate: disLikeBook } = useMutationHook(select, dislike);
-  const { mutate: postComment } = useMutationHook(id, postCommentfn);
+const Book = ({ id, img, title, liked, query }) => {
+  const [user] = useUser();
+
+  const save = user?.user?.savedBooks;
+  const token = user?.token;
+  const userID = user?.user?._id;
+
+  const { mutate: likeBook } = useMutationHook(query, fn.like);
+  const { mutate: disLikeBook } = useMutationHook(query, fn.dislike);
+  const { mutate: postComment } = useMutationHook(id, fn.postCommentfn);
+  const { mutate: saveBook } = useMutationHook(id, fn.saveBook);
+  const { mutate: unsaveBook } = useMutationHook("user", fn.unsaveBook);
+
   const navigate = useNavigate();
 
-  const { data } = useQuery(id, () => getComment(id));
+  const { data } = useQuery(id, () => fn.getComment(id));
 
   const comments = data?.data.data.book?.reviews?.map((bookReview, i) => {
     return (
@@ -92,18 +108,23 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
       css={{
         width: "15rem",
         padding: "1rem",
-        border: "1px solid #999",
+        marginTop: "3rem",
+        boxShadow: "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px",
+        borderRadius: "1rem",
+        fontSize: "1rem",
+        color: "#333",
       }}
     >
       <img
         css={{
           width: "100%",
+          height: "12rem",
         }}
         src={img}
         alt=""
       />
       <div>
-        <p>{title}</p>
+        <p>{title[0]}</p>
 
         <div
           css={{
@@ -122,18 +143,18 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
             {liked?.includes(userID) ? (
               <DisLikeButton
                 onClick={() => {
-                  disLikeBook({ id, token });
+                  user ? disLikeBook({ id, token }) : navigate("/login");
                 }}
               />
             ) : (
               <LikeButton
                 onClick={() => {
-                  token ? likeBook({ id, token }) : navigate("/login");
+                  user ? likeBook({ id, token }) : navigate("/login");
                 }}
               />
             )}
             <div>
-              <CommentButton onClick={open}></CommentButton>
+              <CommentButton onClick={open} />
               <Dialog aria-label="review" isOpen={openModal} onDismiss={close}>
                 <div>
                   <button
@@ -148,9 +169,7 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
                   </button>
 
                   <div>
-                    <div>
-                      <p>yonas:💖💖💖💖💖💖💖</p> {comments}
-                    </div>
+                    <div>comments {comments}</div>
                     <div>
                       <form onSubmit={(e) => handleComment(e, id)}>
                         <label htmlFor="comment">comment</label>
@@ -166,9 +185,11 @@ const Book = ({ img, title, id, save, token, liked, userID, select }) => {
           </div>
 
           <div>
-            <button>
-              <i className="fa-solid fa-bookmark fa-2x">S</i>
-            </button>
+            {save ? (
+              <UnSavedButton onClick={saveBook({ id, token })} />
+            ) : (
+              <SaveButton unsaveBook={unsaveBook({ id, token })} />
+            )}
           </div>
         </div>
       </div>

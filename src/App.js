@@ -1,25 +1,41 @@
 import React from "react";
-import AuthenticatedApp from "./authenticated-app";
+import "./style/App.css";
+import BookStore from "./bookstore";
 import Login from "./components/login";
+import Signup from "./components/signup";
 import * as auth from "./auth-provider";
 import { Route, Routes } from "react-router-dom";
 import { useQuery } from "react-query";
 
+import { useUser } from "./context/user-context";
+
 function App() {
-  const [user, setUser] = React.useState(null);
   const [token, setToken] = React.useState(() => auth.getToken());
+  const [, setUser] = useUser();
+  const [err, setErr] = React.useState("");
 
   const login = (form) =>
-    auth.login(form).then((u) => {
-      setToken(u.token);
-    });
+    auth.login(form).then(
+      (t) => {
+        setToken(t.token);
+      },
+      (err) => setErr(err.message)
+    );
 
-  const logout = (form) =>
-    auth.logout(form).then((u) => {
-      setToken(null);
-    });
+  const signup = (form) =>
+    auth.signup(form).then(
+      (t) => {
+        setToken(t.token);
+      },
+      (err) => setErr(err.message)
+    );
 
-  useQuery(
+  const logout = () => {
+    auth.logout();
+    setToken(null);
+  };
+
+  const { isLoading } = useQuery(
     "user",
     () => {
       return window
@@ -43,16 +59,21 @@ function App() {
     }
   );
 
+  if (isLoading) {
+    return <p>Loading.........</p>;
+  }
+
   return (
-    <>
+    <div>
       <Routes>
+        <Route path="/" element={<BookStore logout={logout} />} />
+        <Route path="/login" element={<Login onSubmit={login} err={err} />} />
         <Route
-          path="/"
-          element={<AuthenticatedApp user={user} logout={logout} />}
+          path="/signup"
+          element={<Signup onSubmit={signup} err={err} />}
         />
-        <Route path="/login" element={<Login onSubmit={login} />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

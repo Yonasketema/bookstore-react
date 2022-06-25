@@ -46,5 +46,35 @@ const postCommentfn = ({ review, bookid, token }) => {
     }
   );
 };
+const saveBook = async ({ id, token }) => {
+  return axios.put(
+    "http://localhost:8000/api/v1/books/save",
+    {
+      bookId: id,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+const unsaveBook = async ({ id, token }) => {
+  return await axios.put(
+    "http://localhost:8000/api/v1/books/unsave",
+    {
+      bookId: id,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
 
-export { fetchBook, like, dislike, getComment, postCommentfn };
+export {
+  fetchBook,
+  like,
+  dislike,
+  getComment,
+  postCommentfn,
+  saveBook,
+  unsaveBook,
+};
