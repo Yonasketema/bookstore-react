@@ -4,9 +4,8 @@
 ## Tech
 
 - [react.js](https://reactjs.org/)
-- [redux](https://redux.js.org/)
 - [Emotion-styled-components](https://emotion.sh/docs/introduction)
-- [graphql](https://graphql.org/)
+ 
 
 ## Installation
 
