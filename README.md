@@ -1,4 +1,4 @@
- # scandi-shop
+ # Book Store
  ### check the graph ql endpint - [here](https://github.com/Yonasketema/graphql-bookstore-api)
 
 ## Tech
