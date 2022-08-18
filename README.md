@@ -1,5 +1,5 @@
  # Book Store
- ### check the graph ql endpint - [here](https://github.com/Yonasketema/graphql-bookstore-api)
+ ### check the graph ql endpoint - [here](https://github.com/Yonasketema/graphql-bookstore-api)
 
 ## Tech
 
