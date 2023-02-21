@@ -1,4 +1,4 @@
- # Book Store
+ # Book Store 📚
  ### check the graph ql endpoint - [here](https://github.com/Yonasketema/graphql-bookstore-api)
 
 ## Tech
